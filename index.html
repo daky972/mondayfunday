@@ -1,0 +1,204 @@
+<html>
+    <style>
+
+        body {
+            margin-top: 5%;
+        }
+
+        .body {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .game-container {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgb(132, 209, 219);
+            padding: 1%;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .title-container {
+            font-size: 4rem;
+            text-align: center;
+            padding-bottom: 5%;
+        }
+
+        .description-container {
+            padding: 30px;
+            background-color: powderblue;    
+            border-radius: 10px;
+        }
+
+        .description-container .description {
+            font-size: 2rem;
+        }
+
+        .suggestions-container {
+            position: relative;
+            display: flex;
+            margin-top: 30px;
+            padding: 30px;
+            border: 1px solid black;
+        }
+
+        .suggestions-container .wrapper {
+            position: relative;
+            display: flex;
+            flex-direction: row;
+        }
+        .suggestions-container .letter-wrapper {
+            position: relative;
+            display: flex;
+            width: 4rem;
+            height: 4rem;
+            background-color: powderblue;    
+            border-radius: 10px;
+            text-align: center;
+            margin: 0.2rem;
+        }
+
+        .suggestions-container .letter-wrapper .letter {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3rem;
+            user-select: none;
+        }
+
+        .stop-button-container {
+            position: relative;
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .stop-button-container .stop-button-wrapper {
+            position: relative;
+            display: block;
+            left: 50%;
+            transform: translateX(-50%);
+            width: fit-content;
+            height: fit-content;
+            padding: 10px 25px;
+            border-radius: 5px;
+            margin-top: 15px;
+            background-color: rgb(47, 138, 190);
+            cursor: pointer;
+        }
+
+        .stop-button-container .stop-button-wrapper.disabled {
+            background-color: rgb(150, 150, 153);
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        
+        .stop-button-container .stop-button-wrapper .button {
+            user-select: none;
+            font-size: 1.5rem;
+        }
+
+    </style>
+    <body>
+        <div class="body">
+            <div class="game-container">
+                <div class="title-container">
+                    <div class="title">Quiz</div>
+                </div>
+                <div class="description-container">
+                    <div class="description">
+                        Find the longest word from the following letters:
+                    </div>
+                </div>
+                <div class="suggestions-container">
+                    <div id="suggestions_id" class="wrapper">
+                        
+                    </div>
+                </div>
+                <div class="stop-button-container">
+                    <div id="start_stop_wrapper_id" class="stop-button-wrapper">
+                        <div id="start_stop_button_id" class="button">Start</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </body>
+
+    <script>
+        var suggestionContainer = document.getElementById('suggestions_id');
+        function generateLetters() {
+            let html = '';
+            for (let i = 0; i < 12; i++) {
+                html += `<div class="letter-wrapper"><span id="letter_${i}" class="letter"></span></div>`;
+            }
+            suggestionContainer.insertAdjacentHTML('beforeend', html);
+            
+        }
+        // function addLetter(letter) {
+        //     suggestionContainer.insertAdjacentHTML('beforeend', `<div class="letter-wrapper"><span class="letter">${letter}</span></div>`);
+        // }
+
+        // for (let i = 0; i < 12; i++) {
+        //     addLetter('A');
+        // }
+
+        var letterIndex = -1;
+        var MAX_LETTERS = 12;
+        var currentLetter = '';
+        var letters = [];
+        function spinLetterAtIndex(index, letter) {
+            let _letter = letter.toUpperCase();
+            let char = _letter.codePointAt(0);
+            if (char < 65 || char > 90) {
+                throw new Error(`Invalid character - ${_letter}`);
+            }
+            
+            currentLetter = _letter;
+            char = char === 90 ? 65 : char;
+            
+            try {
+                document.getElementById(`letter_${index}`).innerText = _letter;
+            } catch (e) {
+                console.log(e);
+            }
+            
+            setTimeout(() => {
+                if (!letters[index]) {
+                    spinLetterAtIndex(index, String.fromCharCode(++char));
+                } 
+            }, 50);
+        }
+
+        var stopButton = document.getElementById('start_stop_button_id');
+        stopButton.addEventListener('click', stopButtonClickHandler);
+        function stopButtonClickHandler(event) {
+            if (letterIndex === MAX_LETTERS - 1) {
+                stopButton.removeEventListener('click', stopButtonClickHandler);
+                letters[letterIndex] = currentLetter;
+                document.getElementById('start_stop_wrapper_id').classList.add('disabled');
+                return;
+            }
+
+            if (letterIndex === -1) {
+                stopButton.innerText = 'Stop';
+            } else {
+                letters[letterIndex] = currentLetter;
+            }
+
+            letterIndex++;
+            spinLetterAtIndex(letterIndex, getRandomLetter());
+        }
+
+        function getRandomLetter() {
+            return String.fromCharCode(Math.random() * (90 - 66) + 65);
+        }
+
+        generateLetters();
+    </script>
+</html>

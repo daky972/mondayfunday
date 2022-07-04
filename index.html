@@ -14,7 +14,9 @@
         .game-container {
             position: absolute;
             left: 50%;
-            transform: translateX(-50%);
+            -webkit-transform: translateX(-50%);
+                -ms-transform: translateX(-50%);
+                    transform: translateX(-50%);
             background-color: rgb(132, 209, 219);
             padding: 1%;
             border-top-left-radius: 10px;
@@ -39,6 +41,8 @@
 
         .suggestions-container {
             position: relative;
+            display: -webkit-box;
+            display: -ms-flexbox;
             display: flex;
             margin-top: 30px;
             padding: 30px;
@@ -47,11 +51,18 @@
 
         .suggestions-container .wrapper {
             position: relative;
+            display: -webkit-box;
+            display: -ms-flexbox;
             display: flex;
-            flex-direction: row;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+                -ms-flex-direction: row;
+                    flex-direction: row;
         }
         .suggestions-container .letter-wrapper {
             position: relative;
+            display: -webkit-box;
+            display: -ms-flexbox;
             display: flex;
             width: 4rem;
             height: 4rem;
@@ -64,11 +75,20 @@
         .suggestions-container .letter-wrapper .letter {
             width: 100%;
             height: 100%;
+            display: -webkit-box;
+            display: -ms-flexbox;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                    justify-content: center;
+            -webkit-box-align: center;
+                -ms-flex-align: center;
+                    align-items: center;
             font-size: 3rem;
-            user-select: none;
+            -webkit-user-select: none;
+               -moz-user-select: none;
+                -ms-user-select: none;
+                    user-select: none;
         }
 
         .stop-button-container {
@@ -82,8 +102,14 @@
             position: relative;
             display: block;
             left: 50%;
-            transform: translateX(-50%);
+            -webkit-transform: translateX(-50%);
+                -ms-transform: translateX(-50%);
+                    transform: translateX(-50%);
+            width: -webkit-fit-content;
+            width: -moz-fit-content;
             width: fit-content;
+            height: -webkit-fit-content;
+            height: -moz-fit-content;
             height: fit-content;
             padding: 10px 25px;
             border-radius: 5px;
@@ -99,7 +125,10 @@
         }
         
         .stop-button-container .stop-button-wrapper .button {
-            user-select: none;
+            -webkit-user-select: none;
+               -moz-user-select: none;
+                -ms-user-select: none;
+                    user-select: none;
             font-size: 1.5rem;
         }
 
